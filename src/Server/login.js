@@ -12,7 +12,7 @@ connection();
 // Middlewares
 app.use(express.json());
 app.use(cors({
-  origin: 'https://habits-development.netlify.app'
+  origin: ['https://habits-development.netlify.app', 'http://localhost:3000']
 }));
 
 
