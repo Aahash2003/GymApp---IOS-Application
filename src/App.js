@@ -17,6 +17,8 @@ import CaloriePage from './components/CalorieLog/CaloriePage';
 import Profile from './components/profile/Profile';
 import CalorieCalc from './components/CalorieCalculator/CalorieCalc';
 import AI from './components/AI/AI';
+import FitBit from './components/fitbit/FitBit';
+
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -49,6 +51,8 @@ const App = () => {
           <Route path="api/users/:id/verify/:token" element={<EmailVerify />} />
           <Route path="/api/workout/user/:email/workouts" element={isAuthenticated ? <WorkoutLogger /> : <Navigate replace to="/login" />} />
           <Route path ="/AI" element= {<AI/>}/>
+          <Route path ="/FitBit" element= {<FitBit/>}/>
+          
           <Route
             path="/profile"
             element={

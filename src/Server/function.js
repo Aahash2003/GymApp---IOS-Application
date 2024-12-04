@@ -6,6 +6,8 @@ const app = express();
 app.use(cors({
     origin: 'https://habits-development.netlify.app'
 }));
+const fitbitRouter = require("/routes/fitbit"); // Import Fitbit router
+app.use("/api/fitbit", fitbitRouter);
 
 app.use(express.json());
 app.use('/', express.static('../src'));

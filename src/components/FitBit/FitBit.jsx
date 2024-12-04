@@ -1,19 +1,15 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import {
     Box,
     Button,
-    FormControl,
-    FormLabel,
-    Input,
-    Stack,
-    Heading,
-    Text,
     Alert,
     AlertIcon,
+    Heading,
+    Text,
 } from '@chakra-ui/react';
 
-const clientId = '<YOUR_CLIENT_ID>'; // Replace with your Fitbit app's client ID
+const clientId = '23PZHY'; // Replace with your Fitbit app's client ID
 const redirectUri = 'http://localhost:3000'; // Replace with your redirect URI
 const fitbitAuthUrl = 'https://www.fitbit.com/oauth2/authorize';
 
@@ -60,23 +56,7 @@ const FitBit = () => {
 
     const handleTokenExchange = async (code) => {
         try {
-            const verifier = sessionStorage.getItem('code_verifier');
-            const response = await axios.post(
-                'https://api.fitbit.com/oauth2/token',
-                new URLSearchParams({
-                    client_id: clientId,
-                    grant_type: 'authorization_code',
-                    redirect_uri: redirectUri,
-                    code,
-                    code_verifier: verifier,
-                }),
-                {
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                    },
-                }
-            );
-
+            const response = await axios.post('http://localhost:3001/api/token', { code });
             setAccessToken(response.data.access_token);
         } catch (err) {
             setError('Error exchanging authorization code for token.');
@@ -90,30 +70,27 @@ const FitBit = () => {
         }
 
         try {
-            const response = await axios.get('https://api.fitbit.com/1/user/-/profile.json', {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`,
-                },
+            const response = await axios.get('http://localhost:3001/api/profile', {
+                headers: { accessToken },
             });
-
             setProfileData(response.data.user);
         } catch (err) {
             setError('Error fetching profile data.');
         }
     };
 
-    // Check for authorization code in the URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const code = urlParams.get('code');
-    if (code && !accessToken) {
-        handleTokenExchange(code);
-    }
+    useEffect(() => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const code = urlParams.get('code');
+        if (code && !accessToken) {
+            handleTokenExchange(code);
+        }
+    }, [accessToken]);
 
     return (
-    
         <Box p={6}>
             <Heading as="h1" size="lg" mb={6}>
-                Profile Page
+                Fitbit Profile Page
             </Heading>
 
             {error && (
