@@ -13,7 +13,7 @@ const baseURL = process.env.NODE_ENV === 'development'
   : 'https://mustang-central-eb5dd97b4796.herokuapp.com/';
 
 const clientId = '23PZHY'; // Replace with your Fitbit app's client ID
-const redirectUri = 'http://localhost:3000/fitbit'; // Replace with your redirect URI
+const redirectUri = 'http://localhost:3000/FitBit'; // Replace with your redirect URI
 const fitbitAuthUrl = 'https://www.fitbit.com/oauth2/authorize';
 
 const generateCodeVerifier = () => {
