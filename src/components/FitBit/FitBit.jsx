@@ -42,7 +42,7 @@ const FitBit = () => {
 
             // Store the verifier in session storage for later use
             sessionStorage.setItem('code_verifier', verifier);
-
+            console.log('fitbitshit')
             const url = `${fitbitAuthUrl}?response_type=code&client_id=${clientId}&redirect_uri=${encodeURIComponent(
                 redirectUri
             )}&scope=profile&code_challenge=${challenge}&code_challenge_method=S256`;
@@ -50,13 +50,13 @@ const FitBit = () => {
             setAuthUrl(url);
             window.location.href = url; // Redirect to Fitbit's authorization page
         } catch (err) {
-            setError('Error generating code challenge.');
+            setError('Error generating code challenge. ');
         }
     };
 
     const handleTokenExchange = async (code) => {
         try {
-            const response = await axios.post('http://localhost:3001/api/token', { code });
+            const response = await axios.post('http://localhost:3000/api/token', { code });
             setAccessToken(response.data.access_token);
         } catch (err) {
             setError('Error exchanging authorization code for token.');
@@ -64,13 +64,15 @@ const FitBit = () => {
     };
 
     const fetchProfileData = async () => {
+        console.log('TOken is missing')
         if (!accessToken) {
+            
             setError('Access token is missing.');
             return;
         }
 
         try {
-            const response = await axios.get('http://localhost:3001/api/profile', {
+            const response = await axios.get('http://localhost:3000/api/profile', {
                 headers: { accessToken },
             });
             setProfileData(response.data.user);
