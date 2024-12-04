@@ -10,7 +10,7 @@ import {
 } from '@chakra-ui/react';
 
 const clientId = '23PZHY'; // Replace with your Fitbit app's client ID
-const redirectUri = 'http://localhost:3000'; // Replace with your redirect URI
+const redirectUri = 'http://localhost:3000/fitbit'; // Replace with your redirect URI
 const fitbitAuthUrl = 'https://www.fitbit.com/oauth2/authorize';
 
 const generateCodeVerifier = () => {
@@ -56,6 +56,7 @@ const FitBit = () => {
 
     const handleTokenExchange = async (code) => {
         try {
+            console.log('handleTokenExchange')
             const response = await axios.post('http://localhost:3000/api/token', { code });
             setAccessToken(response.data.access_token);
         } catch (err) {
@@ -83,8 +84,12 @@ const FitBit = () => {
 
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);
+
+        console.log('urlparma'+urlParams);
         const code = urlParams.get('code');
+        console.log('code:'+code);
         if (code && !accessToken) {
+           
             handleTokenExchange(code);
         }
     }, [accessToken]);

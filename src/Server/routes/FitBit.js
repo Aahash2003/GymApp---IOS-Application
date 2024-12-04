@@ -14,7 +14,10 @@ const tokenCache = {};
 
 // Endpoint to exchange authorization code for an access token
 router.post("/api/token", async (req, res) => {
+    console.log('bakcend fitbit1');
     try {
+        console.log('bakcend fitbit');
+
         const { code } = req.body;
 
         if (!code) {
