@@ -60,7 +60,7 @@ const FitBit = () => {
     const handleTokenExchange = async (code) => {
         try {
             console.log('handleTokenExchange')
-            const response = await axios.post(`${baseURL}api/fitbitback/token`, { code });
+            const response = await axios.post(`${baseURL}api/FitBit/token`, { code });
             setAccessToken(response.data.access_token);
         } catch (err) {
             setError('Error exchanging authorization code for token.');

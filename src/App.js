@@ -17,7 +17,7 @@ import CaloriePage from './components/CalorieLog/CaloriePage';
 import Profile from './components/profile/Profile';
 import CalorieCalc from './components/CalorieCalculator/CalorieCalc';
 import AI from './components/AI/AI';
-import FitBit from './components/fitbit/FitBit';
+import FitBit from './components/FitBit/FitBit';
 
 
 const App = () => {
