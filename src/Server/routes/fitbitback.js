@@ -9,11 +9,16 @@ const clientId = process.env.FITBIT_CLIENT_ID;
 const clientSecret = process.env.FITBIT_CLIENT_SECRET;
 const redirectUri = "http://localhost:3000/fitbit"; // Must match the redirect URI in Fitbit Developer settings
 
+
+const baseURL = process.env.NODE_ENV === 'development'
+  ? 'http://localhost:8080/'
+  : 'https://mustang-central-eb5dd97b4796.herokuapp.com/';
+
 // In-memory cache for tokens (for simplicity; replace with a proper database in production)
 const tokenCache = {};
 
 // Endpoint to exchange authorization code for an access token
-router.post("/api/token", async (req, res) => {
+router.post("/token", async (req, res) => {
     console.log('bakcend fitbit1');
     try {
         console.log('bakcend fitbit');
@@ -61,7 +66,7 @@ router.post("/api/token", async (req, res) => {
 });
 
 // Endpoint to fetch Fitbit user profile data
-router.get("/api/profile", async (req, res) => {
+router.get("/profile", async (req, res) => {
     try {
         const accessToken = req.headers.accesstoken;
 

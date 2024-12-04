@@ -8,6 +8,9 @@ import {
     Heading,
     Text,
 } from '@chakra-ui/react';
+const baseURL = process.env.NODE_ENV === 'development'
+  ? 'http://localhost:8080/'
+  : 'https://mustang-central-eb5dd97b4796.herokuapp.com/';
 
 const clientId = '23PZHY'; // Replace with your Fitbit app's client ID
 const redirectUri = 'http://localhost:3000/fitbit'; // Replace with your redirect URI
@@ -57,7 +60,7 @@ const FitBit = () => {
     const handleTokenExchange = async (code) => {
         try {
             console.log('handleTokenExchange')
-            const response = await axios.post('http://localhost:3000/api/token', { code });
+            const response = await axios.post(`${baseURL}api/fitbitback/token`, { code });
             setAccessToken(response.data.access_token);
         } catch (err) {
             setError('Error exchanging authorization code for token.');
@@ -73,7 +76,7 @@ const FitBit = () => {
         }
 
         try {
-            const response = await axios.get('http://localhost:3000/api/profile', {
+            const response = await axios.get(`${baseURL}api/FitBit/profile`, {
                 headers: { accessToken },
             });
             setProfileData(response.data.user);
