@@ -23,6 +23,7 @@ app.use("/api/calories", require("./routes/calorie"));
 app.use("/api/calc", require("./routes/caloriecalc"));
 app.use("/api/profile", require("./routes/profile"));
 app.use("/api/AI", require("./routes/AI"));
+app.use("/api/FitBit", require("./routes/FitBit"));
 
 
 // Serve static files from the React app

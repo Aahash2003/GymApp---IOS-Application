@@ -8,12 +8,13 @@ import {
     Heading,
     Text,
 } from '@chakra-ui/react';
+
 const baseURL = process.env.NODE_ENV === 'development'
   ? 'http://localhost:8080/'
   : 'https://mustang-central-eb5dd97b4796.herokuapp.com/';
 
-const clientId = '23PZHY'; // Replace with your Fitbit app's client ID
-const redirectUri = 'http://localhost:3000/FitBit'; // Replace with your redirect URI
+const clientId = '23PZHY'; 
+const redirectUri = 'http://localhost:3000/FitBit'; 
 const fitbitAuthUrl = 'https://www.fitbit.com/oauth2/authorize';
 
 const generateCodeVerifier = () => {
@@ -41,26 +42,27 @@ const FitBit = () => {
     const handleAuthorization = async () => {
         try {
             const verifier = generateCodeVerifier();
+            console.log("verifier: ", verifier);
             const challenge = await generateCodeChallenge(verifier);
+            console.log("challenge: ", challenge);
 
-            // Store the verifier in session storage for later use
             sessionStorage.setItem('code_verifier', verifier);
-            console.log('fitbitshit')
+
             const url = `${fitbitAuthUrl}?response_type=code&client_id=${clientId}&redirect_uri=${encodeURIComponent(
                 redirectUri
             )}&scope=profile&code_challenge=${challenge}&code_challenge_method=S256`;
 
             setAuthUrl(url);
-            window.location.href = url; // Redirect to Fitbit's authorization page
+            window.location.href = url;
         } catch (err) {
-            setError('Error generating code challenge. ');
+            setError('Error generating code challenge.');
         }
     };
 
     const handleTokenExchange = async (code) => {
         try {
-            console.log('handleTokenExchange')
-            const response = await axios.post(`${baseURL}api/FitBit/token`, { code });
+            const verifier = sessionStorage.getItem('code_verifier');
+            const response = await axios.post(`${baseURL}api/FitBit/token`, { code, verifier });
             setAccessToken(response.data.access_token);
         } catch (err) {
             setError('Error exchanging authorization code for token.');
@@ -68,9 +70,7 @@ const FitBit = () => {
     };
 
     const fetchProfileData = async () => {
-        console.log('TOken is missing')
         if (!accessToken) {
-            
             setError('Access token is missing.');
             return;
         }
@@ -87,12 +87,9 @@ const FitBit = () => {
 
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);
-
-        console.log('urlparma'+urlParams);
         const code = urlParams.get('code');
-        console.log('code:'+code);
+
         if (code && !accessToken) {
-           
             handleTokenExchange(code);
         }
     }, [accessToken]);
@@ -124,15 +121,14 @@ const FitBit = () => {
 
             {profileData && (
                 <Box mt={6}>
-                    <Text>
-                        <strong>Name:</strong> {profileData.fullName}
-                    </Text>
-                    <Text>
-                        <strong>Age:</strong> {profileData.age}
-                    </Text>
-                    <Text>
-                        <strong>Gender:</strong> {profileData.gender}
-                    </Text>
+                    <Heading as="h2" size="md" mb={4}>
+                        User Information
+                    </Heading>
+                    {Object.entries(profileData).map(([key, value]) => (
+                        <Text key={key}>
+                            <strong>{key}:</strong> {JSON.stringify(value, null, 2)}
+                        </Text>
+                    ))}
                 </Box>
             )}
         </Box>

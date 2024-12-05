@@ -3,11 +3,11 @@ const axios = require("axios");
 const dotenv = require("dotenv");
 const router = express.Router();
 dotenv.config();
-
+const qs = require('qs');
 // Fitbit credentials from environment variables
 const clientId = process.env.FITBIT_CLIENT_ID;
 const clientSecret = process.env.FITBIT_CLIENT_SECRET;
-const redirectUri = "http://localhost:3000/fitbit"; // Must match the redirect URI in Fitbit Developer settings
+const redirectUri = "http://localhost:3000/FitBit"; // Must match the redirect URI in Fitbit Developer settings
 
 
 const baseURL = process.env.NODE_ENV === 'development'
@@ -19,11 +19,10 @@ const tokenCache = {};
 
 // Endpoint to exchange authorization code for an access token
 router.post("/token", async (req, res) => {
-    console.log('bakcend fitbit1');
     try {
-        console.log('bakcend fitbit');
+        
 
-        const { code } = req.body;
+        const { code,verifier } = req.body;
 
         if (!code) {
             return res.status(400).json({ error: "Authorization code is missing." });
@@ -35,19 +34,23 @@ router.post("/token", async (req, res) => {
             return res.json({ access_token: tokenCache[code] });
         }
 
-        // Exchange the authorization code for an access token
+        const authHeader = 'Basic ' + Buffer.from(clientId + ':' + clientSecret).toString('base64');
+
+        
+        
         const response = await axios.post(
             "https://api.fitbit.com/oauth2/token",
-            new URLSearchParams({
+            qs.stringify({
                 client_id: clientId,
-                client_secret: clientSecret,
                 grant_type: "authorization_code",
                 redirect_uri: redirectUri,
                 code,
+                code_verifier:verifier,
             }),
             {
                 headers: {
                     "Content-Type": "application/x-www-form-urlencoded",
+                    "Authorization": authHeader,
                 },
             }
         );
