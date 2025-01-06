@@ -10,7 +10,7 @@ const baseURL =  'https://habits-development.netlify.app/';
 // Load environment variables
 dotenv.config({ path: path.resolve(__dirname, '../utils/.env') });
 
-router.post("/", async (req, res) => {
+router.post("/token", async (req, res) => {
     try {
         const { error } = validate(req.body);
         if (error) return res.status(400).send({ message: error.details[0].message });

@@ -3,7 +3,6 @@ const express = require("express");
 const path = require("path");
 const cors = require("cors");
 const connection = require("./db");
-
 const app = express();
 
 // Database connection
@@ -24,6 +23,8 @@ app.use("/api/calories", require("./routes/calorie"));
 app.use("/api/calc", require("./routes/caloriecalc"));
 app.use("/api/profile", require("./routes/profile"));
 app.use("/api/AI", require("./routes/AI"));
+app.use("/api/FitBit", require("./routes/FitBit"));
+
 
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, '../../build'))); // Adjusted path to reflect typical project structure
