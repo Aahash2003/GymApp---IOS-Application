@@ -95,6 +95,7 @@ const Login = () => {
                         </button>
                     </form>
                 </div>
+                <!-- TODO: move this under the login, at least for mobile view. it wont fit otherwise -->
                 <div className={styles.right}>
                     <h1>New Here ?</h1>
                     <Link to="/signup">
