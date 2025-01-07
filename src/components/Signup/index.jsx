@@ -42,14 +42,7 @@ const Signup = () => {
 	return (
 		<div className={styles.signup_container}>
 			<div className={styles.signup_form_container}>
-				<div className={styles.left}>
-					<h1>Welcome Back</h1>
-					<Link to="/login">
-						<button type="button" className={styles.white_btn}>
-							Sign in
-						</button>
-					</Link>
-				</div>
+
 				<div className={styles.right}>
 					<form className={styles.form_container} onSubmit={handleSubmit}>
 						<h1>Create Account</h1>
@@ -60,7 +53,7 @@ const Signup = () => {
 							onChange={handleChange}
 							value={data.firstName}
 							required
-							className={styles.input}
+							className={styles.box_input}
 						/>
 						<input
 							type="text"
@@ -69,7 +62,7 @@ const Signup = () => {
 							onChange={handleChange}
 							value={data.lastName}
 							required
-							className={styles.input}
+							className={styles.box_input}
 						/>
                         <input
 							type="text"
@@ -78,7 +71,7 @@ const Signup = () => {
 							onChange={handleChange}
 							value={data.nickName}
 							required
-							className={styles.input}
+							className={styles.box_input}
 						/>
 						<input
 							type="email"
@@ -87,7 +80,7 @@ const Signup = () => {
 							onChange={handleChange}
 							value={data.email}
 							required
-							className={styles.input}
+							className={styles.box_input}
 						/>
 						<input
 							type="password"
@@ -96,7 +89,7 @@ const Signup = () => {
 							onChange={handleChange}
 							value={data.password}
 							required
-							className={styles.input}
+							className={styles.box_input}
 						/>
 						{error && <div className={styles.error_msg}>{error}</div>}
 						{msg && <div className={styles.success_msg}>{msg}</div>}
@@ -104,6 +97,14 @@ const Signup = () => {
 							Sign Up
 						</button>
 					</form>
+				</div>
+				<div className={styles.left}>
+					<h1>Welcome Back</h1>
+					<Link to="/login">
+						<button type="button" className={styles.white_btn}>
+							Sign in
+						</button>
+					</Link>
 				</div>
 			</div>
 		</div>

@@ -34,7 +34,7 @@ const Login = () => {
                 navigate("/"); // Redirect to main page if verified
             }
         } catch (error) {
-            if (error.response && error.response.status == 400){
+            if (error.response && error.response.status === 400){
                 setError("Check Verification Link");
                 setResend(false);
 
@@ -95,7 +95,6 @@ const Login = () => {
                         </button>
                     </form>
                 </div>
-                {/* TODO: move this under the login, at least for mobile view. it wont fit otherwise */}
                 <div className={styles.right}>
                     <h1>New Here ?</h1>
                     <Link to="/signup">
