@@ -6,7 +6,7 @@ const baseURL = process.env.NODE_ENV === 'development'
     ? 'http://localhost:8080/'
     : 'https://mustang-central-eb5dd97b4796.herokuapp.com/';
 
-
+//TODO: have a better signup expereience: list of password requirements, loading state for signup button
 const Signup = () => {
 	const [data, setData] = useState({
 		firstName: "",
