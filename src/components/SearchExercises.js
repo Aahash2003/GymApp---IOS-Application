@@ -45,7 +45,7 @@ const SearchExercises = ({ setExercises, bodyPart, setBodyPart }) => {
 
     return (
         <Stack className="search-container">
-            <Typography fontWeight={700} className="search-title" textAlign="center">
+            <Typography className="search-title">
                 Great Exercises You<br />Should Learn
             </Typography>
             <Box className="search-box">

@@ -10,6 +10,8 @@
 .search-title {
     font-size: 44px;
     margin-bottom: 10px;
+    text-align: center;
+    font-weight: 700;
 }
 
 @media (max-width: 600px) {
