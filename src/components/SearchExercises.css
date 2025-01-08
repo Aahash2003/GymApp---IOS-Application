@@ -1,3 +1,12 @@
+/* SearchExercises.css */
+
+.search-container {
+    align-items: center;
+    margin-top: 37px;
+    justify-content: center;
+    padding: 20px;
+}
+
 .search-title {
     font-size: 44px;
     margin-bottom: 10px;
@@ -9,15 +18,22 @@
     }
 }
 
+.search-box {
+    position: relative;
+    margin-bottom: 72px;
+}
+
 .search-input {
     font-weight: 700;
     border: none;
+    border-radius: 4px;
     width: 1000px;
     background-color: #fff;
     border-radius: 40px;
+    height: 76px;
 }
 
-@media (max-width: 500px) {
+@media (max-width: 600px) {
     .search-input {
         width: 350px;
     }

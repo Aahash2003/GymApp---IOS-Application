@@ -44,14 +44,13 @@ const SearchExercises = ({ setExercises, bodyPart, setBodyPart }) => {
     };
 
     return (
-        <Stack alignItems="center" mt="37px" justifyContent="center" p="20px">
+        <Stack className="search-container">
             <Typography fontWeight={700} className="search-title" textAlign="center">
                 Great Exercises You<br />Should Learn
             </Typography>
-            <Box position="relative" mb="72px">
+            <Box className="search-box">
                 <TextField
                     className="search-input"
-                    height="76px"
                     value={search}
                     onChange={(e) => setSearch(e.target.value.toLowerCase())}
                     placeholder="Search Exercises"
