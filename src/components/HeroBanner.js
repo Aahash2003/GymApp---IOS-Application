@@ -28,7 +28,7 @@ const HeroBanner = () => {
 
 
                     </Typography>
-                    <img src= {HeroBannerImage} alt= "banner" className='hero-banner-img' style={{ left: '100000px', margin:'20px'}}px = "-20px"/>
+                 {/* Fixed the problem of the scrolling to the right    <img src= {HeroBannerImage} alt= "banner" className='hero-banner-img' style={{ left: '50000px', margin:'20px'}}px = "-20px"/>*/} 
         </Box>
     )
 }
