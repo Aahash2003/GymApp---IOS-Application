@@ -44,7 +44,7 @@ const SearchExercises = ({ setExercises, bodyPart, setBodyPart }) => {
     };
 
     return (
-        <Stack className="search-container">
+        <div className="search-container">
             <Typography className="search-title">
                 Great Exercises You<br />Should Learn
             </Typography>
@@ -66,7 +66,7 @@ const SearchExercises = ({ setExercises, bodyPart, setBodyPart }) => {
             <Box className="horizontal-scrollbar">
                 <HorizontalScrollbar data={bodyParts} bodyPart={bodyPart} setBodyPart={setBodyPart} isBodyParts />
             </Box>
-        </Stack>
+        </div>
     );
 };
 

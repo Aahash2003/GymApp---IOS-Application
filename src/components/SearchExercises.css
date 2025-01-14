@@ -26,11 +26,18 @@
     margin-bottom: 72px;
 }
 
+@media (max-width: 500px) {
+    .search-container .search-box {
+        width: 100%;
+        margin-bottom: 33px;
+    }
+}
+
 .search-container .search-input {
     font-weight: 700;
     border: none;
     width: 1000px;
-    background-color: #fff;
+    background-color: white;
     border-radius: 40px;
     height: 76px;
     margin-left: 10px;

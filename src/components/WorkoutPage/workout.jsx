@@ -3,11 +3,9 @@ import axios from 'axios';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import CreateCategory from './CreateCategory';
-import CategoryCard from './CategoryCard';
 import HorizontalScrollbar from './HorizontalScrollBar';
-import './Workout.css'; // Import the CSS file for styling
+import './Workout.css';
 import {Alert, AlertIcon,} from '@chakra-ui/react';
-import { Stack } from '@mui/material';
 const baseURL = process.env.NODE_ENV === 'development'
     ? 'http://localhost:8080/'
     : 'https://mustang-central-eb5dd97b4796.herokuapp.com/';
@@ -211,7 +209,7 @@ const handleDeleteCategory = async (categoryId) => {
             payload.workoutId = selectedWorkout._id; // Only pass the workoutId if editing the exact same workout
         }
 
-        const response = await axios.post(`${baseURL}api/workout/logWorkout`, payload);
+        //const response = await axios.post(`${baseURL}api/workout/logWorkout`, payload);
         setError('Workout logged successfully');
         fetchWorkoutsByCategory(selectedCategory);  // Refresh the workouts list
     } catch (error) {
@@ -226,11 +224,11 @@ const handleDeleteCategory = async (categoryId) => {
     fetchWorkouts();
 };
 
-const filteredWorkouts = workoutsByCategory.filter(workout => {
-    const workoutDate = new Date(workout.date).toDateString();
-    const selectedDate = date.toDateString();
-    return workoutDate === selectedDate;
-});
+// const filteredWorkouts = workoutsByCategory.filter(workout => {
+//     const workoutDate = new Date(workout.date).toDateString();
+//     const selectedDate = date.toDateString();
+//     return workoutDate === selectedDate;
+// });
 
 
 return (
