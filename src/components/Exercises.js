@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Pagination from '@mui/material/Pagination';
+import Pagination from '@mui/material/Pagination';// what the fuck is this
 import { exerciseOptions, fetchData } from '../utils/fetchData';
 import ExerciseCard from './ExerciseCard';
 

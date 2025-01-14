@@ -43,18 +43,18 @@ const SearchExercises = ({ setExercises, bodyPart, setBodyPart }) => {
 
     return (
         <div className="flex flex-col items-center w-full mt-9 p-5">
-            <div className="text-4xl font-bold mb-2 text-center sm:text-2xl">
+            <div className="text-4xl font-bold mb-8 text-center">
                 Great Exercises You<br />Should Learn
             </div>
             <div className="flex items-center relative mb-18 sm:mb-8 w-full">
                 <textarea
-                    className="font-bold border-none w-[1000px] bg-white rounded-full h-19 ml-2 sm:w-full sm:h-8"
+                    className="font-bold border border-gray-300 w-[1000px] bg-white rounded-full h-19 ml-2 resize-none py-1 px-2 sm:w-full sm:h-8"
                     value={search}
                     onChange={(e) => setSearch(e.target.value.toLowerCase())}
                     placeholder="Search Exercises"
                 />
                 <button
-                    className="bg-red-600 text-white capitalize w-44 h-14 text-lg sm:w-20 sm:h-8 sm:text-sm"
+                    className="bg-red-600 text-white capitalize w-44 h-9 ml-4 rounded-lg text-semibold"
                     onClick={handleSearch}
                 >
                     Search
