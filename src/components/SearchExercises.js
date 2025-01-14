@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { Button, TextField } from '@mui/material';
 import { fetchAllExercises, fetchData, exerciseOptions } from '../utils/fetchData';
 import HorizontalScrollbar from './HorizontalScrollbar';
 
@@ -48,19 +47,18 @@ const SearchExercises = ({ setExercises, bodyPart, setBodyPart }) => {
                 Great Exercises You<br />Should Learn
             </div>
             <div className="flex items-center relative mb-18 sm:mb-8 w-full">
-                <TextField
+                <textarea
                     className="font-bold border-none w-[1000px] bg-white rounded-full h-19 ml-2 sm:w-full sm:h-8"
                     value={search}
                     onChange={(e) => setSearch(e.target.value.toLowerCase())}
                     placeholder="Search Exercises"
-                    type="text"
                 />
-                <Button
+                <button
                     className="bg-red-600 text-white capitalize w-44 h-14 text-lg sm:w-20 sm:h-8 sm:text-sm"
                     onClick={handleSearch}
                 >
                     Search
-                </Button>
+                </button>
             </div>
             <div className="relative w-full p-5">
                 <HorizontalScrollbar
