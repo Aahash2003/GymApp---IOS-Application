@@ -1,36 +1,29 @@
 import React from 'react'
-import { Box, Stack, Typography, Button } from '@mui/material';
-import HeroBannerImage from '../Assets/Logo/banner.png'
 const HeroBanner = () => {
     return (
-        <Box sx={{ mt: { lg: '212px', xs: '70px' }, 
-        ml: { sm: '50px' } }} 
-        postition="relative" p="20px" >
-            <Typography color="#FF2625" fontWeight="600" fontSize="26px">
+        <div className="relative mt-[70px] p-5 lg:mt-[212px] sm:ml-[50px]">
+            <h1 className="text-[#FF2625] font-semibold text-[26px]">
                 Fitness Club
-                </Typography>
-                <Typography fontWeight={700} 
-                sx={{ fontSize: { lg: '44px', xs: '40px'}}}
-                mb = "15px" mt="20px">
-                    Sleep  <br />
-                    Grind  
-                     <br />
-                    Repeat
-                    </Typography>
-                    <Typography  fontSize = "22px" lineHeight= "35px" mb = {2}>
-                        Check out the Most Effective Workouts
-                    </Typography>
-                    <Button variant = "contained" color= "error" href = "#exercises " sx={{backgroundColor: 'ff2625', padding: '10px'}} >Explore Exercises</Button>
-                    <Typography fontWeight={600} color="#ff2625" sx={{opacity: 0.1, display: { lg: 'block', xs: 'none'} }}
-                    fontSize="200px"
-                    >
-                        Exercises
-
-
-                    </Typography>
-                 {/* Fixed the problem of the scrolling to the right    <img src= {HeroBannerImage} alt= "banner" className='hero-banner-img' style={{ left: '50000px', margin:'20px'}}px = "-20px"/>*/} 
-        </Box>
-    )
+            </h1>
+            <h2 className="font-bold mt-5 mb-4 text-[40px] lg:text-[44px]">
+                Sleep <br />
+                Grind <br />
+                Repeat
+            </h2>
+            <p className="text-[22px] leading-[35px] mb-2">
+                Check out the Most Effective Workouts
+            </p>
+            <a
+                href="#exercises"
+                className="inline-block bg-[#ff2625] text-white py-2 px-4 rounded hover:bg-[#e52422] transition"
+            >
+                Explore Exercises
+            </a>
+            <h1 className="font-bold text-[200px] text-[#ff2625] opacity-10 hidden lg:block">
+                Exercises
+            </h1>
+        </div>
+    );
 }
 
 export default HeroBanner

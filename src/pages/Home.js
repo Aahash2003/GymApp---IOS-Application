@@ -9,7 +9,7 @@ const Home = () => {
   const [exercises, setExercises] = useState([]);
 
   return (
-    <Box> 
+    <div>
     <HeroBanner />
     <SearchExercises 
     setExercises={setExercises}
@@ -21,7 +21,7 @@ const Home = () => {
     setExercises={setExercises}
     bodyPart={bodyPart}
      />
-    </Box>
+    </div>
   )
 }
 

@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Button, Stack, TextField, Typography } from '@mui/material';
+import { Button, TextField } from '@mui/material';
 import { fetchAllExercises, fetchData, exerciseOptions } from '../utils/fetchData';
 import HorizontalScrollbar from './HorizontalScrollbar';
-import './SearchExercises.css';
 
 const SearchExercises = ({ setExercises, bodyPart, setBodyPart }) => {
     const [search, setSearch] = useState('');
@@ -44,30 +43,36 @@ const SearchExercises = ({ setExercises, bodyPart, setBodyPart }) => {
     };
 
     return (
-        <div className="search-container">
-            <Typography className="search-title">
+        <div className="flex flex-col items-center w-full mt-9 p-5">
+            <div className="text-4xl font-bold mb-2 text-center sm:text-2xl">
                 Great Exercises You<br />Should Learn
-            </Typography>
-            <Box className="search-box">
+            </div>
+            <div className="flex items-center relative mb-18 sm:mb-8 w-full">
                 <TextField
-                    className="search-input"
+                    className="font-bold border-none w-[1000px] bg-white rounded-full h-19 ml-2 sm:w-full sm:h-8"
                     value={search}
                     onChange={(e) => setSearch(e.target.value.toLowerCase())}
                     placeholder="Search Exercises"
                     type="text"
                 />
                 <Button
-                    className="search-btn"
+                    className="bg-red-600 text-white capitalize w-44 h-14 text-lg sm:w-20 sm:h-8 sm:text-sm"
                     onClick={handleSearch}
                 >
                     Search
                 </Button>
-            </Box>
-            <Box className="horizontal-scrollbar">
-                <HorizontalScrollbar data={bodyParts} bodyPart={bodyPart} setBodyPart={setBodyPart} isBodyParts />
-            </Box>
+            </div>
+            <div className="relative w-full p-5">
+                <HorizontalScrollbar
+                    data={bodyParts}
+                    bodyPart={bodyPart}
+                    setBodyPart={setBodyPart}
+                    isBodyParts
+                />
+            </div>
         </div>
     );
+
 };
 
 export default SearchExercises;

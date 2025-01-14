@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Pagination from '@mui/material/Pagination';
-import { Box, Stack, Typography } from '@mui/material/';
-
 import { exerciseOptions, fetchData } from '../utils/fetchData';
-
 import ExerciseCard from './ExerciseCard';
 
 const Exercises = ({ exercises, setExercises, bodyPart }) => {
@@ -41,38 +38,28 @@ const Exercises = ({ exercises, setExercises, bodyPart }) => {
      , [bodyPart]);
 
   return (
-    <Box id="exercises"
-      sx={{ mt: { jg: '110px' } }}
-      mt="50px"
-      p="20px"
-    >
+      <div id="exercises" className="mt-[50px] p-5 lg:mt-[110px]">
+        <h3 className="text-3xl font-bold mb-12">Showing Results</h3>
+        <div className="flex flex-wrap justify-center gap-[110px] sm:gap-[50px]">
+          {currentEx.map((exercise, index) => (
+              <ExerciseCard key={index} exercise={exercise} />
+          ))}
+        </div>
+        <div className="mt-24 flex justify-center">
+          {exercises.length > 9 && (
+              <Pagination
+                  color="standard"
+                  shape="rounded"
+                  defaultPage={1}
+                  count={Math.ceil(exercises.length / exercisesPerPage)}
+                  page={currentPage}
+                  onChange={paginate}
+              />
+          )}
+        </div>
+      </div>
+  );
 
-      <Typography variant="h3" mb="46px">
-        Showing Results
-      </Typography>
-      <Stack direction="row" sx={{ gap: { lg: '110px', xs: '5opx' } }}
-        flexWrap="wrap" justifyContent="center">
-        {currentEx.map((exercise, index) => (
-          <ExerciseCard key={index} exercise={exercise} />
-        ))}
-
-      </Stack>
-      <Stack mt="100px" alignItems="center">
-        {exercises.length > 9 && (
-          <Pagination
-          color="standard"
-          shape="rounded"
-          defaultPage={1}
-          count={Math.ceil(exercises.length / exercisesPerPage)}
-          page={currentPage}
-          onChange={paginate}
-          //materialUI for info on this
-          />
-        )}
-
-      </Stack>
-    </Box>
-  )
 }
 
 export default Exercises
