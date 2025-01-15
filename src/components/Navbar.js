@@ -1,82 +1,80 @@
-import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { Stack } from '@mui/material';
-
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import Logo from '../Assets/Logo/Logo3.png';
 
 const Navbar = ({ isAuthenticated, setIsAuthenticated }) => {
-  const navigate = useNavigate(); // Initialize the navigate function
+    const [menuOpen, setMenuOpen] = useState(false);
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("isVerified");
-    localStorage.removeItem("isAdmin");
-    setIsAuthenticated(false);  // Update authentication state
-    window.location.href = "https://habits-development.netlify.app"; // Redirect to the base page
-  };
+    const handleLogout = () => {
+        localStorage.removeItem("token");
+        localStorage.removeItem("isVerified");
+        localStorage.removeItem("isAdmin");
+        setIsAuthenticated(false);
+        window.location.href = "https://habits-development.netlify.app";
+    };
 
-  return (
-    <Stack
-      direction="row"
-      justifyContent="space-around"
-      sx={{ gap: { sm: '122px', xs: '40px' }, mt: { sm: '32px', xs: '20px' }, justifyContent: 'none' }}
-      px="20px"
-    >
-      <Link to="/">
-        <img src={Logo} alt="logo" style={{ width: '48px', height: '48px', margin: '10px' }} />
-      </Link>
-      <Stack alignItems="center" direction="row" gap="40px" fontSize="24px">
-        <Link to="/home" style={{ textDecoration: 'none', color: '#3A1212', borderBottom: '3px solid #3A1212' }}>Home</Link>
-        <Link to="/calc" style={{ textDecoration: 'none', color: '#3A1212', margin: '0px' }}>Caloric Calculator</Link>
-        <Link to="/workout" style={{ textDecoration: 'none', color: '#3A1212', margin: '0px' }}>Workout Log</Link>
-        <Link to="/Calories" style={{ textDecoration: 'none', color: '#3A1212', margin: '0px' }}>Caloric Counter</Link>
-        <Link to="/profile" style={{ textDecoration: 'none', color: '#3A1212', margin: '0px' }}>Profile</Link>
-        <Link to="/AI" style={{ textDecoration: 'none', color: '#3A1212', margin: '0px' }}>AI</Link>
-        <Link to="/FitBit" style={{ textDecoration: 'none', color: '#3A1212', margin: '0px' }}>FitBit</Link>
-        
-        {isAuthenticated ? (
-          <button 
-            style={{
-              border: 'none', 
-              outline: 'none', 
-              padding: '12px', 
-              backgroundColor: 'white', 
-              borderRadius: '20px', 
-              width: '120px',
-              fontWeight: 'bold',
-              fontSize: '14px', 
-              cursor: 'pointer', 
-              marginRight: '20px'
-            }} 
-            onClick={handleLogout}
-          >
-            Logout
-          </button>
-        ) : (
-          <Link 
-            to="/login"
-            style={{
-              textDecoration: 'none', 
-              color: '#3A1212', 
-              border: 'none', 
-              outline: 'none', 
-              padding: '12px', 
-              backgroundColor: 'white', 
-              borderRadius: '20px', 
-              width: '120px',
-              fontWeight: 'bold',
-              fontSize: '14px', 
-              cursor: 'pointer', 
-              marginRight: '20px',
-              textAlign: 'center'
-            }}
-          >
-            Login
-          </Link>
-        )}
-      </Stack>
-    </Stack>
-  );
+    const handleLinkClick = () => {
+        setMenuOpen(false);
+    };
+
+    return (
+        <div className="flex justify-between items-center px-5 py-5 bg-white border-b">
+            <div className="hidden md:block">
+                <Link to="/">
+                    <img src={Logo} alt="logo" className="w-12 h-12" />
+                </Link>
+            </div>
+            <button
+                className="text-gray-800 md:hidden focus:outline-none"
+                onClick={() => setMenuOpen(!menuOpen)}
+            >
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    className="w-8 h-8"
+                >
+                    <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d={menuOpen ? 'M6 18L18 6M6 6l12 12' : 'M4 6h16M4 12h16M4 18h16'}
+                    />
+                </svg>
+            </button>
+            <div
+                className={`${
+                    menuOpen ? 'block' : 'hidden'
+                } md:flex md:items-center md:space-x-8 md:text-2xl`}
+            >
+                <Link to="/home" className="text-gray-800 hover:underline py-2 block" onClick={handleLinkClick}>Home</Link>
+                <Link to="/calc" className="text-gray-800 hover:underline py-2 block" onClick={handleLinkClick}>Caloric Calculator</Link>
+                <Link to="/workout" className="text-gray-800 hover:underline py-2 block" onClick={handleLinkClick}>Workout Log</Link>
+                <Link to="/Calories" className="text-gray-800 hover:underline py-2 block" onClick={handleLinkClick}>Caloric Counter</Link>
+                <Link to="/profile" className="text-gray-800 hover:underline py-2 block" onClick={handleLinkClick}>Profile</Link>
+                <Link to="/AI" className="text-gray-800 hover:underline py-2 block" onClick={handleLinkClick}>AI</Link>
+                <Link to="/FitBit" className="text-gray-800 hover:underline py-2 block" onClick={handleLinkClick}>FitBit</Link>
+            </div>
+            <div>
+                {isAuthenticated ? (
+                    <button
+                        className="bg-white border border-gray-300 rounded-full px-6 py-2 text-sm font-bold text-gray-800 hover:bg-gray-100 focus:outline-none"
+                        onClick={handleLogout}
+                    >
+                        Logout
+                    </button>
+                ) : (
+                    <Link
+                        to="/login"
+                        className="bg-white border border-gray-300 rounded-full px-6 py-2 text-sm font-bold text-gray-800 hover:bg-gray-100 focus:outline-none"
+                    >
+                        Login
+                    </Link>
+                )}
+            </div>
+        </div>
+    );
 };
 
 export default Navbar;
