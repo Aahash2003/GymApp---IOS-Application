@@ -1,16 +1,23 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Logo from '../Assets/Logo/Logo3.png';
 
 const Navbar = ({ isAuthenticated, setIsAuthenticated }) => {
     const [menuOpen, setMenuOpen] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const navigate = useNavigate();
 
-    const handleLogout = () => {
-        localStorage.removeItem("token");
-        localStorage.removeItem("isVerified");
-        localStorage.removeItem("isAdmin");
-        setIsAuthenticated(false);
-        window.location.href = "https://habits-development.netlify.app";
+    const handleLogout = async () => {
+        setIsLoading(true);
+        try {
+            localStorage.removeItem("token");
+            localStorage.removeItem("isVerified");
+            localStorage.removeItem("isAdmin");
+            setIsAuthenticated(false);
+            navigate('/login');
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     const handleLinkClick = () => {
@@ -59,10 +66,11 @@ const Navbar = ({ isAuthenticated, setIsAuthenticated }) => {
             <div>
                 {isAuthenticated ? (
                     <button
-                        className="bg-white border border-gray-300 rounded-full px-6 py-2 text-sm font-bold text-gray-800 hover:bg-gray-100 focus:outline-none"
+                        className={`bg-white border border-gray-300 rounded-full px-6 py-2 text-sm font-bold text-gray-800 hover:bg-gray-100 focus:outline-none ${isLoading ? 'cursor-not-allowed bg-gray-200' : ''}`}
                         onClick={handleLogout}
+                        disabled={isLoading}
                     >
-                        Logout
+                        {isLoading ? 'Logging Out...' : 'Logout'}
                     </button>
                 ) : (
                     <Link

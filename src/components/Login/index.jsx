@@ -10,6 +10,7 @@ const Login = () => {
     const [data, setData] = useState({ email: "", password: "" });
     const [error, setError] = useState("");
     const [resend, setResend] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
 
     const handleChange = ({ currentTarget: input }) => {
@@ -18,6 +19,7 @@ const Login = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setIsLoading(true);
         try {
             const url = `${baseURL}api/auth`;
             const { data: res } = await axios.post(url, data);
@@ -33,7 +35,7 @@ const Login = () => {
                 navigate("/");
             }
         } catch (error) {
-            if (error.response && error.response.status === 400){
+            if (error.response && error.response.status === 400) {
                 setError("Check Verification Link");
                 setResend(false);
             }
@@ -42,6 +44,8 @@ const Login = () => {
                 setError(error.response.data.message);
                 setResend(false);
             }
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -58,9 +62,13 @@ const Login = () => {
 
     return (
         <div className="w-full min-h-screen flex items-center justify-center bg-white">
-            <div className="w-[900px] h-[500px] flex flex-col md:flex-row shadow-md rounded-lg overflow-hidden">
+            <div className="w-[900px] h-auto md:h-[500px] flex flex-col md:flex-row shadow-md rounded-lg overflow-hidden">
                 <div className="flex-2 flex flex-col items-center justify-center bg-white p-8 w-full md:w-auto">
-                    <form className="flex flex-col items-center w-full" onSubmit={handleSubmit}>
+                    <form
+                        className="flex flex-col items-center w-full"
+                        onSubmit={handleSubmit}
+                        style={{ minHeight: "300px" }}
+                    >
                         <h1 className="text-3xl md:text-4xl mb-6">Login to Your Account</h1>
                         <input
                             type="email"
@@ -80,7 +88,11 @@ const Login = () => {
                             required
                             className="w-full p-4 rounded-lg bg-gray-200 mb-4 text-sm"
                         />
-                        {error && <div className="w-full p-4 mb-4 text-sm bg-red-500 text-white text-center rounded">{error}</div>}
+                        {error && (
+                            <div className="w-full p-4 mb-4 text-sm bg-red-500 text-white text-center rounded">
+                                {error}
+                            </div>
+                        )}
                         {resend && (
                             <div className="mt-4">
                                 <button
@@ -92,8 +104,14 @@ const Login = () => {
                                 </button>
                             </div>
                         )}
-                        <button type="submit" className="px-4 py-2 mt-6 bg-teal-600 text-white rounded-2xl w-[180px] font-bold text-sm">
-                            Sign In
+                        <button
+                            type="submit"
+                            className={`px-4 py-2 mt-6 rounded-2xl w-[180px] font-bold text-sm ${
+                                isLoading ? "bg-gray-500" : "bg-teal-600 text-white"
+                            }`}
+                            disabled={isLoading}
+                        >
+                            {isLoading ? "Loading..." : "Sign In"}
                         </button>
                     </form>
                 </div>
@@ -111,6 +129,7 @@ const Login = () => {
             </div>
         </div>
     );
+
 };
 
 export default Login;
