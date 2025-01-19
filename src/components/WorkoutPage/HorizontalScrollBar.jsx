@@ -1,6 +1,5 @@
 import React from 'react';
 import { ScrollMenu, VisibilityContext } from 'react-horizontal-scrolling-menu';
-import './HorizontalScrollBar.css';
 import LeftArrowIcon from './left-arrow.png';
 import RightArrowIcon from './right-arrow.png';
 
