@@ -96,9 +96,7 @@ const FitBit = () => {
 
     return (
         <Box p={6}>
-            <Heading as="h1" size="lg" mb={6}>
-                Fitbit Profile Page
-            </Heading>
+            
 
             {error && (
                 <Alert status="error" mb={4}>
@@ -119,18 +117,43 @@ const FitBit = () => {
                 </Button>
             )}
 
-            {profileData && (
-                <Box mt={6}>
-                    <Heading as="h2" size="md" mb={4}>
-                        User Information
-                    </Heading>
-                    {Object.entries(profileData).map(([key, value]) => (
-                        <Text key={key}>
-                            <strong>{key}:</strong> {JSON.stringify(value, null, 2)}
-                        </Text>
-                    ))}
-                </Box>
-            )}
+{profileData && profileData.topBadges && (
+    <Box mt={6}>
+        
+        {profileData && profileData.topBadges && (
+    <div className="mt-6 p-4 bg-gray-100 rounded-lg shadow-md">
+        <h2 className="text-xl font-semibold mb-4 text-gray-800">Top Badges</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {profileData.topBadges.map((badge, index) => (
+                <div 
+                    key={index} 
+                    className="flex flex-col items-center p-4 bg-white rounded-lg shadow hover:shadow-lg transition-shadow"
+                >
+                    <img 
+                        src={badge.image100px} 
+                        alt={badge.name} 
+                        className="w-20 h-20 mb-4"
+                    />
+                    <h3 className="text-lg font-medium text-gray-700 mb-2">
+                        {badge.name}
+                    </h3>
+                    <p className="text-sm text-gray-600 text-center mb-2">
+                        {badge.description}
+                    </p>
+                    <p className="text-xs text-gray-500">
+                        Earned on: <span className="font-semibold">{badge.dateTime}</span>
+                    </p>
+                </div>
+            ))}
+        </div>
+    </div>
+)}
+
+    </Box>
+)}
+
+
+
         </Box>
     );
 };
