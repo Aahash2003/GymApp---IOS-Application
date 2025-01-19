@@ -1,84 +1,77 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-import { Box, Heading, Text, List, ListItem, Button, Alert } from '@chakra-ui/react';
+
 const baseURL = process.env.NODE_ENV === 'development'
     ? 'http://localhost:8080/'
     : 'https://mustang-central-eb5dd97b4796.herokuapp.com/';
 
-
 const ViewCalories = ({ calories, selectedDate, onDeleteSuccess }) => {
-  const [filteredCalories, setFilteredCalories] = useState([]);
-  const email = localStorage.getItem('email');
+    const [filteredCalories, setFilteredCalories] = useState([]);
+    const email = localStorage.getItem('email');
 
-  useEffect(() => {
-    // Convert selectedDate to UTC for accurate comparison
-    const selectedDateUTC = new Date(Date.UTC(
-      selectedDate.getFullYear(),
-      selectedDate.getMonth(),
-      selectedDate.getDate()
-    ));
+    useEffect(() => {
+        const selectedDateUTC = new Date(Date.UTC(
+            selectedDate.getFullYear(),
+            selectedDate.getMonth(),
+            selectedDate.getDate()
+        ));
 
-    // Filter the calories based on the selected date (in UTC)
-    const filtered = calories.filter((log) => {
-      const logDate = new Date(log.date);
-      const logDateUTC = new Date(Date.UTC(
-        logDate.getFullYear(),
-        logDate.getMonth(),
-        logDate.getDate()
-      ));
-      return logDateUTC.toDateString() === selectedDateUTC.toDateString();
-    });
+        const filtered = calories.filter((log) => {
+            const logDate = new Date(log.date);
+            const logDateUTC = new Date(Date.UTC(
+                logDate.getFullYear(),
+                logDate.getMonth(),
+                logDate.getDate()
+            ));
+            return logDateUTC.toDateString() === selectedDateUTC.toDateString();
+        });
 
-    setFilteredCalories(filtered);
-  }, [selectedDate, calories]);
+        setFilteredCalories(filtered);
+    }, [selectedDate, calories]);
 
-  const handleDelete = async (id) => {
-    try {
-      await axios.delete(`${baseURL}api/calories/logcalories/${id}`);
-      console.log('Calorie log deleted');
-      onDeleteSuccess(); // Trigger the parent to refresh the logs
-    } catch (error) {
-      console.error('Error deleting calorie log:', error);
-      console.log('Error deleting calorie log');
-    }
-  };
+    const handleDelete = async (id) => {
+        try {
+            await axios.delete(`${baseURL}api/calories/logcalories/${id}`);
+            onDeleteSuccess();
+        } catch (error) {
+            alert('Error deleting calorie log');
+        }
+    };
 
-  return (
-    <Box p={5} borderWidth="1px" borderRadius="md" boxShadow="md">
-      <Heading as="h2" size="lg" mb={4}>
-        View Calories
-      </Heading>
-      <Text fontSize="lg" mb={4}>
-        Logs for {selectedDate.toDateString()}
-      </Text>
-      <List spacing={3}>
-        {filteredCalories.map((log) => (
-          <ListItem key={log._id} p={3} borderWidth="1px" borderRadius="md" boxShadow="sm">
-            <Text><strong>Calories:</strong> {log.calories} kcal</Text>
-            <Text><strong>Protein:</strong> {log.protein} g</Text>
-            <Text><strong>Carbohydrates:</strong> {log.carbohydrates} g</Text>
-            <Text><strong>Fats:</strong> {log.fats} g</Text>
-            <Button mt={2} colorScheme="red" size="sm" onClick={() => handleDelete(log._id)}>
-              Delete
-            </Button>
-          </ListItem>
-        ))}
-        {filteredCalories.length === 0 && (
-          <Alert status="info" mt={4}>
-            No logs found for this date.
-          </Alert>
-        )}
-      </List>
-    </Box>
-  );
+    return (
+        <div>
+            <h2 className="text-lg font-bold mb-4">View Calories</h2>
+            <p className="text-gray-700 mb-4">Logs for {selectedDate.toDateString()}</p>
+            <ul className="space-y-4">
+                {filteredCalories.map((log) => (
+                    <li key={log._id} className="p-4 border rounded shadow-sm">
+                        <p><strong>Calories:</strong> {log.calories} kcal</p>
+                        <p><strong>Protein:</strong> {log.protein} g</p>
+                        <p><strong>Carbohydrates:</strong> {log.carbohydrates} g</p>
+                        <p><strong>Fats:</strong> {log.fats} g</p>
+                        <button
+                            onClick={() => handleDelete(log._id)}
+                            className="mt-2 bg-red-500 text-white py-1 px-4 rounded hover:bg-red-600 text-sm"
+                        >
+                            Delete
+                        </button>
+                    </li>
+                ))}
+                {filteredCalories.length === 0 && (
+                    <div className="mt-4 p-3 border rounded bg-blue-100 text-blue-700">
+                        No logs found for this date.
+                    </div>
+                )}
+            </ul>
+        </div>
+    );
 };
 
-// Define PropTypes for the component to ensure correct prop usage
 ViewCalories.propTypes = {
-  calories: PropTypes.array.isRequired,
-  selectedDate: PropTypes.instanceOf(Date).isRequired,
-  onDeleteSuccess: PropTypes.func.isRequired,
+    calories: PropTypes.array.isRequired,
+    selectedDate: PropTypes.instanceOf(Date).isRequired,
+    onDeleteSuccess: PropTypes.func.isRequired,
 };
 
 export default ViewCalories;
