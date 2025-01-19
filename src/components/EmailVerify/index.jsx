@@ -41,7 +41,7 @@ const EmailVerify = () => {
                     <h1 className="text-2xl font-bold text-gray-800">Email verified successfully</h1>
                     <p className="text-gray-600 mt-2">Redirecting to login page...</p>
                     <Link to="/login">
-                        <button className="mt-4 px-6 py-3 bg-green-500 text-white rounded-full font-bold hover:bg-green-600 transition">Login</button>
+                        <button className="mt-4 px-6 py-3 bg-teal-600 text-white rounded-full font-bold hover:bg-teal-700 transition">Login</button>
                     </Link>
                 </div>
             ) : (
