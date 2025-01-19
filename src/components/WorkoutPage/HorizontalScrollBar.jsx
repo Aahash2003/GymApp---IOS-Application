@@ -1,116 +1,60 @@
 import React from 'react';
 import { ScrollMenu, VisibilityContext } from 'react-horizontal-scrolling-menu';
-import { Box, Typography, Stack, IconButton, Button } from '@mui/material';
-import './HorizontalScrollBar.css'; // Ensure you have your custom styles here
-import LeftArrowIcon from './left-arrow.png';  // Replace with your own icon path
-import RightArrowIcon from './right-arrow.png'; // Replace with your own icon path
+import './HorizontalScrollBar.css';
+import LeftArrowIcon from './left-arrow.png';
+import RightArrowIcon from './right-arrow.png';
 
 const LeftArrow = () => {
-  const { scrollPrev } = React.useContext(VisibilityContext);
+    const { scrollPrev } = React.useContext(VisibilityContext);
 
-  return (
-    <IconButton
-      onClick={() => scrollPrev()}
-      className="left-arrow"
-      sx={{ 
-        position: 'absolute', 
-        left: '30px', 
-        top: '70%', 
-        transform: 'translateY(-50%)', 
-        zIndex: 1,
-        padding: 0, 
-        width: '40px', 
-        height: '40px' 
-      }}
-    >
-      <img src={LeftArrowIcon} alt="left-arrow" style={{ width: '100%', height: '100%' }} />
-    </IconButton>
-  );
+    return (
+        <button
+            onClick={() => scrollPrev()}
+            className="absolute left-8 top-1/2 transform -translate-y-1/2 z-10 bg-white shadow rounded-full w-10 h-10 flex justify-center items-center"
+        >
+            <img src={LeftArrowIcon} alt="left-arrow" className="w-full h-full" />
+        </button>
+    );
 };
 
 const RightArrow = () => {
-  const { scrollNext } = React.useContext(VisibilityContext);
+    const { scrollNext } = React.useContext(VisibilityContext);
 
-  return (
-    <IconButton
-      onClick={() => scrollNext()}
-      className="right-arrow"
-      sx={{ 
-        position: 'absolute', 
-        right: '30px', 
-        top: '70%', 
-        transform: 'translateY(-50%)', 
-        zIndex: 1,
-        padding: 0, 
-        width: '40px', 
-        height: '40px' 
-      }}
-    >
-      <img src={RightArrowIcon} alt="right-arrow" style={{ width: '100%', height: '100%' }} />
-    </IconButton>
-  );
+    return (
+        <button
+            onClick={() => scrollNext()}
+            className="absolute right-8 top-1/2 transform -translate-y-1/2 z-10 bg-white shadow rounded-full w-10 h-10 flex justify-center items-center"
+        >
+            <img src={RightArrowIcon} alt="right-arrow" className="w-full h-full" />
+        </button>
+    );
 };
 
 const HorizontalScrollbar = ({ categories, handleCategoryChange, selectedCategory, handleDeleteCategory }) => (
-  <Box sx={{ position: 'relative', padding: '0 60px' }}>
-    <ScrollMenu LeftArrow={<LeftArrow />} RightArrow={<RightArrow />}>
-      {categories.map((category) => (
-        <Stack
-          key={category._id}
-          itemId={category._id}
-          title={category.name}
-          alignItems="center"
-          justifyContent="center"
-          className="category-card"
-          sx={{
-            cursor: 'pointer',
-            border: selectedCategory === category._id ? '4px solid #FF2625' : 'none',
-            borderBottomLeftRadius: '15px',
-            width: '270px',
-            height: '300px', // Increased height to accommodate the delete button
-            background: '#fff',
-            gap: '10px',
-            margin: '0 20px',
-            paddingTop: '20px',
-            transition: 'transform 0.2s ease',
-            '&:hover': {
-              transform: 'scale(1.05)',
-            },
-          }}
-          onClick={() => handleCategoryChange(category._id)}
-        >
-          <img src={category.imageUrl} alt={category.name} style={{ width: '100px', height: '100px' }} />
-          <Typography
-            fontSize="20px"
-            fontWeight="bold"
-            fontFamily="Alegreya"
-            color="#3A1212"
-            textTransform="capitalize"
-            sx={{ paddingTop: '10px' }}
-          >
-            {category.name}
-          </Typography>
-          <Button
-            onClick={(e) => {
-              e.stopPropagation(); // Prevent triggering category selection
-              handleDeleteCategory(category._id);
-            }}
-            variant="contained"
-            color="error"
-            size="small"
-            sx={{
-              marginTop: '10px',
-              padding: '3px 6px',
-              fontSize: '0.8em',
-              minWidth: 'auto', // Adjust button width to content
-            }}
-          >
-            Delete
-          </Button>
-        </Stack>
-      ))}
-    </ScrollMenu>
-  </Box>
+    <div className="relative px-16">
+        <ScrollMenu LeftArrow={<LeftArrow />} RightArrow={<RightArrow />}>
+            {categories.map((category) => (
+                <div
+                    key={category._id}
+                    itemId={category._id}
+                    className={`flex flex-col items-center justify-center cursor-pointer border ${selectedCategory === category._id ? 'border-red-500' : 'border-transparent'} rounded-lg w-64 h-80 bg-white shadow-lg mx-4 transition-transform transform hover:scale-105 p-4`}
+                    onClick={() => handleCategoryChange(category._id)}
+                >
+                    <img src={category.imageUrl} alt={category.name} className="w-24 h-24" />
+                    <p className="text-lg font-bold text-gray-800 capitalize mt-2">{category.name}</p>
+                    <button
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            handleDeleteCategory(category._id);
+                        }}
+                        className="mt-4 bg-red-500 text-white py-1 px-4 rounded hover:bg-red-600 text-sm"
+                    >
+                        Delete
+                    </button>
+                </div>
+            ))}
+        </ScrollMenu>
+    </div>
 );
 
 export default HorizontalScrollbar;
