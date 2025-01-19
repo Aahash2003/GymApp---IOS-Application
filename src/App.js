@@ -35,11 +35,11 @@ const App = () => {
     }
 
     return (
-        <div className="app-container">
+        <div>
             {isAuthenticated && (
                 <Navbar isAuthenticated={isAuthenticated} setIsAuthenticated={setIsAuthenticated} />
             )}
-            <div className="content-container">
+            <div>
                 <Routes>
                     <Route path="/" element={isAuthenticated ? <Home /> : <Navigate replace to="/login" />} />
                     <Route path="/home" element={isAuthenticated ? <Home /> : <Navigate replace to="/login" />} />
