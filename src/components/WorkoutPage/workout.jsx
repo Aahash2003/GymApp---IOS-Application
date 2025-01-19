@@ -1,27 +1,23 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import CreateCategory from './CreateCategory';
-import HorizontalScrollbar from './HorizontalScrollBar';
-//import './Workout.css';
-import {Alert, AlertIcon,} from '@chakra-ui/react';
 
 const baseURL = process.env.NODE_ENV === 'development'
     ? 'http://localhost:8080/'
     : 'https://mustang-central-eb5dd97b4796.herokuapp.com/';
 
-
 const WorkoutLogger = () => {
-    const email = localStorage.getItem('email'); // Local storage set in the login
+    const email = localStorage.getItem('email');
 
     const [categories, setCategories] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState('');
     const [workoutsByCategory, setWorkoutsByCategory] = useState([]);
     const [error, setError] = useState('');
-    const [selectedWorkout, setSelectedWorkout] = useState(null); // New state for selected workout
+    const [selectedWorkout, setSelectedWorkout] = useState(null);
     const [exercises, setExercises] = useState([
-        {name: '', sets: '', reps: '', weight: '', restTime: '', currentRepMax: '', oneRepMax: ''}
+        { name: '', sets: '', reps: '', weight: '', restTime: '', currentRepMax: '', oneRepMax: '' }
     ]);
     const [workouts, setWorkouts] = useState([]);
     const [date, setDate] = useState(new Date());
@@ -31,7 +27,7 @@ const WorkoutLogger = () => {
     }, [email]);
 
     const fetchCategories = async () => {
-        const email = localStorage.getItem('email'); // Retrieve email from localStorage
+        const email = localStorage.getItem('email');
         if (!email) {
             setError('User email is missing. Please log in again.');
             return;
@@ -39,7 +35,7 @@ const WorkoutLogger = () => {
 
         try {
             const response = await axios.get(`${baseURL}api/workout/workoutCategories`, {
-                params: {email}  // Pass email as a query parameter
+                params: { email }
             });
             setCategories(response.data);
         } catch (error) {
@@ -55,26 +51,22 @@ const WorkoutLogger = () => {
 
     const fetchWorkouts = async () => {
         try {
-            // Send the UTC date string (YYYY-MM-DD)
             const utcDate = date.toISOString().split('T')[0];
 
             const response = await axios.get(`${baseURL}api/workout/user/${email}/workouts`, {
                 params: {
-                    date: utcDate // Send the UTC date
+                    date: utcDate
                 }
             });
 
-            // Set the workouts directly
             setWorkouts(response.data);
-            console.log(response.data)
         } catch (error) {
             setError('Error fetching workouts: ' + error.message);
         }
     };
 
-
     const fetchWorkoutsByCategory = async (categoryId) => {
-        const email = localStorage.getItem('email'); // Retrieve email from localStorage
+        const email = localStorage.getItem('email');
         if (!email) {
             setError('User email is missing. Please log in again.');
             return;
@@ -82,11 +74,10 @@ const WorkoutLogger = () => {
 
         try {
             const response = await axios.get(`${baseURL}api/workout/category/${categoryId}/workouts`, {
-                params: {email}
+                params: { email }
             });
             setWorkoutsByCategory(response.data);
 
-            // Filter out duplicate workouts by comparing exercise names
             const uniqueWorkouts = response.data.reduce((acc, workout) => {
                 const existingWorkout = acc.find(w => w.exercises.map(e => e.name).sort().join(', ') === workout.exercises.map(e => e.name).sort().join(', '));
                 if (!existingWorkout) {
@@ -103,18 +94,18 @@ const WorkoutLogger = () => {
 
     const handleCategoryChange = (categoryId) => {
         setSelectedCategory(categoryId);
-        setSelectedWorkout(null); // Reset selected workout
+        setSelectedWorkout(null);
         if (categoryId) {
-            fetchWorkoutsByCategory(categoryId); // Fetch workouts for the selected category
+            fetchWorkoutsByCategory(categoryId);
         } else {
-            setWorkoutsByCategory([]); // Clear workouts if no category is selected
+            setWorkoutsByCategory([]);
         }
     };
 
     const onCategoryCreated = () => {
-        // This function should re-fetch the categories or update the state in some way
         fetchCategories();
     };
+
     const handleDeleteCategory = async (categoryId) => {
         const email = localStorage.getItem('email');
         if (!window.confirm('Are you sure you want to delete this category?')) {
@@ -123,28 +114,22 @@ const WorkoutLogger = () => {
 
         try {
             await axios.delete(`${baseURL}api/workout/category/${categoryId}`, {
-                data: {email}
+                data: { email }
             });
             setError('Category deleted successfully');
-            fetchCategories(); // Refresh categories after deletion
+            fetchCategories();
         } catch (error) {
             setError('Error deleting category: ' + (error.response?.data?.message || error.message));
         }
     };
 
-
     const handleWorkoutSelect = (workoutId) => {
         const workout = workoutsByCategory.find(w => w._id === workoutId);
         setSelectedWorkout(workout);
         if (workout) {
-            setExercises(workout.exercises); // Populate form with existing workout data
+            setExercises(workout.exercises);
         }
     };
-
-    /* const handleAddExercise = () => {
-       setExercises([...exercises, { name: '', sets: '', reps: '', weight: '', restTime: '', currentRepMax: '', oneRepMax: '' }]);
-     };
-     */
 
     const handleRemoveExercise = (index) => {
         const newExercises = exercises.filter((_, i) => i !== index);
@@ -154,9 +139,8 @@ const WorkoutLogger = () => {
     const handleExerciseChange = (index, field, value) => {
         const newExercises = exercises.map((exercise, i) => {
             if (i === index) {
-                const updatedExercise = {...exercise, [field]: value};
+                const updatedExercise = { ...exercise, [field]: value };
 
-                // Automatically calculate the one rep max when weight or reps change
                 if (field === 'weight' || field === 'reps') {
                     const weightValue = parseFloat(updatedExercise.weight);
                     const repsValue = parseInt(updatedExercise.reps, 10);
@@ -188,7 +172,6 @@ const WorkoutLogger = () => {
         }
 
         try {
-            // Validate and parse the date
             const parsedDate = date ? new Date(date) : new Date();
             if (isNaN(parsedDate.getTime())) {
                 setError('Invalid date selected. Please choose a valid date.');
@@ -198,35 +181,25 @@ const WorkoutLogger = () => {
             const payload = {
                 exercises,
                 email,
-                date: parsedDate.toISOString(),  // Include the validated date
+                date: parsedDate.toISOString(),
                 categoryId: selectedCategory,
             };
 
             if (selectedWorkout && new Date(selectedWorkout.date).toISOString() === parsedDate.toISOString()) {
-                payload.workoutId = selectedWorkout._id; // Only pass the workoutId if editing the exact same workout
+                payload.workoutId = selectedWorkout._id;
             }
 
-            //const response = await axios.post(`${baseURL}api/workout/logWorkout`, payload);
             setError('Workout logged successfully');
-            fetchWorkoutsByCategory(selectedCategory);  // Refresh the workouts list
+            fetchWorkoutsByCategory(selectedCategory);
         } catch (error) {
-            console.error("Error logging workout:", error.response?.data || error.message);
             setError('Error logging workout: ' + (error.response?.data?.message || error.message));
         }
     };
-
 
     const onDateChange = (newDate) => {
         setDate(newDate);
         fetchWorkouts();
     };
-
-// const filteredWorkouts = workoutsByCategory.filter(workout => {
-//     const workoutDate = new Date(workout.date).toDateString();
-//     const selectedDate = date.toDateString();
-//     return workoutDate === selectedDate;
-// });
-
 
     return (
         <div className="max-w-5xl mx-auto p-5 bg-white rounded-lg shadow-lg">
@@ -269,7 +242,7 @@ const WorkoutLogger = () => {
 
             <h2 className="text-center text-xl font-semibold my-5">{date.toDateString()}</h2>
 
-            <div className="mb-5">
+            <div className="mb-5 flex justify-center">
                 <Calendar onChange={onDateChange} value={date} className="rounded-lg shadow-md" />
             </div>
 
@@ -278,15 +251,6 @@ const WorkoutLogger = () => {
                 categories={categories}
                 handleDeleteCategory={handleDeleteCategory}
             />
-
-            <div className="my-5">
-                <HorizontalScrollbar
-                    categories={categories}
-                    handleCategoryChange={handleCategoryChange}
-                    selectedCategory={selectedCategory}
-                    handleDeleteCategory={handleDeleteCategory}
-                />
-            </div>
 
             {workoutsByCategory.length > 0 && (
                 <div>
@@ -383,9 +347,6 @@ const WorkoutLogger = () => {
             </button>
         </div>
     );
-
-
-
 };
 
 export default WorkoutLogger;
