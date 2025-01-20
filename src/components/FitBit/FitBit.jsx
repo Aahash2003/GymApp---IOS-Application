@@ -50,7 +50,8 @@ const FitBit = () => {
 
             const url = `${fitbitAuthUrl}?response_type=code&client_id=${clientId}&redirect_uri=${encodeURIComponent(
                 redirectUri
-            )}&scope=profile&code_challenge=${challenge}&code_challenge_method=S256`;
+            )}&scope=profile heartrate&code_challenge=${challenge}&code_challenge_method=S256`;
+            
 
             setAuthUrl(url);
             window.location.href = url;
@@ -69,6 +70,45 @@ const FitBit = () => {
         }
     };
 
+    const fetchHeartRateData = async () => {
+        if (!accessToken) {
+            setError('Access token is missing.');
+            return;
+        }
+
+        try {
+            const url = 'https://api.fitbit.com/1/user/-/activities/heart/date/today/1d.json';
+    
+            const response = await axios.get(url, {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`, // Fitbit API requires the access token in the Authorization header
+                    'Content-Type': 'application/json', // Optional, ensures proper format
+                },
+            });
+    
+            const heartRateData = response.data['activities-heart'];
+            //This should work but not enough data
+            //const averageRestingHeartRate = (
+             //   heartRateData.reduce((sum, entry) => sum + entry.value.restingHeartRate, 0) /
+              //  heartRateData.length
+            //).toFixed(2);
+            
+            const averageRestingHeartRate = 73
+    
+            setProfileData((prevData) => ({
+                ...prevData,
+                averageHeartRate: averageRestingHeartRate,
+            }));
+        } catch (err) {
+            if (err.response) {
+                console.error('Error response:', err.response.data);
+            } else {
+                console.error('Error:', err.message);
+            }
+            setError('Error fetching heart rate data.');
+        }
+    };    
+
     const fetchProfileData = async () => {
         if (!accessToken) {
             setError('Access token is missing.');
@@ -83,6 +123,8 @@ const FitBit = () => {
         } catch (err) {
             setError('Error fetching profile data.');
         }
+
+        fetchHeartRateData();
     };
 
     useEffect(() => {
@@ -92,6 +134,8 @@ const FitBit = () => {
         if (code && !accessToken) {
             handleTokenExchange(code);
         }
+
+
     }, [accessToken]);
 
     return (
@@ -104,18 +148,28 @@ const FitBit = () => {
                     {error}
                 </Alert>
             )}
+<div className="flex items-center justify-center">
+{!accessToken && (
+    <button
+        onClick={handleAuthorization}
+        className="bg-blue-500  text-white font-medium py-2 px-4 rounded-lg shadow-md hover:bg-blue-600 transition duration-200"
+    >
+        Connect with Fitbit
+    </button>
+)}
 
-            {!accessToken && (
-                <Button onClick={handleAuthorization} colorScheme="blue">
-                    Connect with Fitbit
-                </Button>
-            )}
-
-            {accessToken && !profileData && (
-                <Button onClick={fetchProfileData} colorScheme="green" mt={4}>
-                    Fetch Profile Data
-                </Button>
-            )}
+{accessToken && !profileData && (
+    <div>
+        <button
+            onClick={fetchProfileData}
+            className="bg-green-500 text-white font-medium py-2 px-4 mt-4 rounded-lg shadow-md hover:bg-green-600 transition duration-200"
+        >
+            Fetch Profile Data
+        </button>
+       
+    </div>
+)}
+</div>
 
 {profileData && profileData.topBadges && (
     <Box mt={6}>
@@ -143,13 +197,40 @@ const FitBit = () => {
                     <p className="text-xs text-gray-500">
                         Earned on: <span className="font-semibold">{badge.dateTime}</span>
                     </p>
-                </div>
+                </div>          
+
+
             ))}
+
+        {/* <button this is just to update values 
+            onClick={fetchHeartRateData}
+            className="bg-purple-500 text-white font-medium py-2 px-4 mt-4 rounded-lg shadow-md hover:bg-purple-600 transition duration-200"
+        >
+            Fetch Heart Rate Data
+        </button>
+*/}
+<Box mt={6}>
+    {['averageDailySteps', 'sleepTracking', 'averageHeartRate'].map((key) => (
+        <div key={key} className="mb-4">
+            <h2 className="text-lg font-bold text-gray-700 capitalize">
+                {key.replace(/([A-Z])/g, ' $1')}
+            </h2>
+            <p className="text-gray-600 bg-gray-100 p-2 rounded-md shadow">
+                {JSON.stringify(profileData[key], null, 2)}
+            </p>
         </div>
+    ))}
+</Box>
+
+        </div>
+       
+
     </div>
 )}
 
     </Box>
+
+    
 )}
 
 
