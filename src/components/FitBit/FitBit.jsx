@@ -145,79 +145,79 @@ const FitBit = () => {
             <AlertIcon />
                 {error}
              </Alert>
-            )}
-{/* Styling of the connect and fetch fitbit information buttons*/}
-<div className="flex items-center justify-center">
-{!accessToken && (
-    <button
-        onClick={handleAuthorization}
-        className="bg-blue-500  text-white font-medium py-2 px-4 rounded-lg shadow-md hover:bg-blue-600 transition duration-200"
-    >
-        Connect with Fitbit
-    </button>
-)}
- 
-    {accessToken && !profileData && (
-        <button
-            onClick={fetchProfileData}
-            className="bg-green-500 text-white font-medium py-2 px-4 mt-4 rounded-lg shadow-md hover:bg-green-600 transition duration-200"
-        >
-            Fetch Profile Data
-        </button>
     )}
-
-</div>
-
-{profileData && profileData.topBadges && (
-<div >
-        {/* Styling of the top badges */}
-        {profileData && profileData.topBadges && (
-    <div className="mt-6 p-4 bg-gray-100 rounded-lg shadow-md">
-        <h2 className="text-xl font-semibold mb-4 text-gray-800">Top Badges</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {profileData.topBadges.map((badge, index) => (
-                <div 
-                    key={index} 
-                    className="flex flex-col items-center p-4 bg-white rounded-lg shadow hover:shadow-lg transition-shadow"
+ {/* Styling of the connect and fetch fitbit information buttons*/}
+    <div className="flex items-center justify-center">
+        {!accessToken && (
+            <button
+                onClick={handleAuthorization}
+                className="bg-blue-500  text-white font-medium py-2 px-4 rounded-lg shadow-md hover:bg-blue-600 transition duration-200"
+            >
+                Connect with Fitbit
+            </button>
+        )}
+        
+            {accessToken && !profileData && (
+                <button
+                    onClick={fetchProfileData}
+                    className="bg-green-500 text-white font-medium py-2 px-4 mt-4 rounded-lg shadow-md hover:bg-green-600 transition duration-200"
                 >
-                    <img 
-                        src={badge.image100px} 
-                        alt={badge.name} 
-                        className="w-20 h-20 mb-4"
-                    />
-                    <h3 className="text-lg font-medium text-gray-700 mb-2">
-                        {badge.name}
-                    </h3>
-                    <p className="text-sm text-gray-600 text-center mb-2">
-                        {badge.description}
-                    </p>
-                    <p className="text-xs text-gray-500">
-                        Earned on: <span className="font-semibold">{badge.dateTime}</span>
-                    </p>
-                </div>          
-            ))}
+                    Fetch Profile Data
+                </button>
+            )}
 
-          {/* <button this is just to update values 
-            onClick={fetchHeartRateData}
-            className="bg-purple-500 text-white font-medium py-2 px-4 mt-4 rounded-lg shadow-md hover:bg-purple-600 transition duration-200"
-         >
-            Fetch Heart Rate Data
-         </button>
-         */}
-              {/* Styling for the other stats */}
-           {['averageDailySteps', 'sleepTracking', 'averageHeartRate'].map((key) => (
-           <div key={key} className="mb-4">
-             <h2 className="text-lg font-bold text-gray-700 capitalize">
-                {key.replace(/([A-Z])/g, ' $1')}
-             </h2>
-             <p className="text-gray-600 bg-gray-100 p-2 rounded-md shadow">
-                {JSON.stringify(profileData[key], null, 2)}
-             </p>
+    </div>
+
+    {profileData && profileData.topBadges && (
+    <div >
+            {/* Styling of the top badges */}
+            {profileData && profileData.topBadges && (
+        <div className="mt-6 p-4 bg-gray-100 rounded-lg shadow-md">
+            <h2 className="text-xl font-semibold mb-4 text-gray-800">Top Badges</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {profileData.topBadges.map((badge, index) => (
+                    <div 
+                        key={index} 
+                        className="flex flex-col items-center p-4 bg-white rounded-lg shadow hover:shadow-lg transition-shadow"
+                    >
+                        <img 
+                            src={badge.image100px} 
+                            alt={badge.name} 
+                            className="w-20 h-20 mb-4"
+                        />
+                        <h3 className="text-lg font-medium text-gray-700 mb-2">
+                            {badge.name}
+                        </h3>
+                        <p className="text-sm text-gray-600 text-center mb-2">
+                            {badge.description}
+                        </p>
+                        <p className="text-xs text-gray-500">
+                            Earned on: <span className="font-semibold">{badge.dateTime}</span>
+                        </p>
+                    </div>          
+                ))}
+
+             {/* <button this is just to update values 
+                onClick={fetchHeartRateData}
+                className="bg-purple-500 text-white font-medium py-2 px-4 mt-4 rounded-lg shadow-md hover:bg-purple-600 transition duration-200"
+             >
+                Fetch Heart Rate Data
+             </button>
+             */}
+                {/* Styling for the other stats */}
+             {['averageDailySteps', 'sleepTracking', 'averageHeartRate'].map((key) => (
+             <div key={key} className="mb-4">
+                <h2 className="text-lg font-bold text-gray-700 capitalize">
+                    {key.replace(/([A-Z])/g, ' $1')}
+                </h2>
+                <p className="text-gray-600 bg-gray-100 p-2 rounded-md shadow">
+                    {JSON.stringify(profileData[key], null, 2)}
+                </p>
+                </div>
+             ))}
             </div>
-         ))}
-          </div>
+        </div>)}
     </div>)}
-  </div>)}
 </div>);
 };
 export default FitBit;
