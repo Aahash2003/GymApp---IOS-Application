@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import {
-    Box,
+    
     Button,
     Alert,
     AlertIcon,
@@ -86,7 +86,7 @@ const FitBit = () => {
                 },
             });
     
-            const heartRateData = response.data['activities-heart'];
+           // const heartRateData = response.data['activities-heart'];
             //This should work but not enough data
             //const averageRestingHeartRate = (
              //   heartRateData.reduce((sum, entry) => sum + entry.value.restingHeartRate, 0) /
@@ -139,15 +139,14 @@ const FitBit = () => {
     }, [accessToken]);
 
     return (
-        <Box p={6}>
-            
-
-            {error && (
-                <Alert status="error" mb={4}>
-                    <AlertIcon />
-                    {error}
-                </Alert>
+<div >
+    {error && (
+        <Alert status="error" mb={4}>
+            <AlertIcon />
+                {error}
+             </Alert>
             )}
+{/* Styling of the connect and fetch fitbit information buttons*/}
 <div className="flex items-center justify-center">
 {!accessToken && (
     <button
@@ -157,23 +156,21 @@ const FitBit = () => {
         Connect with Fitbit
     </button>
 )}
-
-{accessToken && !profileData && (
-    <div>
+ 
+    {accessToken && !profileData && (
         <button
             onClick={fetchProfileData}
             className="bg-green-500 text-white font-medium py-2 px-4 mt-4 rounded-lg shadow-md hover:bg-green-600 transition duration-200"
         >
             Fetch Profile Data
         </button>
-       
-    </div>
-)}
+    )}
+
 </div>
 
 {profileData && profileData.topBadges && (
-    <Box mt={6}>
-        
+<div >
+        {/* Styling of the top badges */}
         {profileData && profileData.topBadges && (
     <div className="mt-6 p-4 bg-gray-100 rounded-lg shadow-md">
         <h2 className="text-xl font-semibold mb-4 text-gray-800">Top Badges</h2>
@@ -198,45 +195,29 @@ const FitBit = () => {
                         Earned on: <span className="font-semibold">{badge.dateTime}</span>
                     </p>
                 </div>          
-
-
             ))}
 
-        {/* <button this is just to update values 
+          {/* <button this is just to update values 
             onClick={fetchHeartRateData}
             className="bg-purple-500 text-white font-medium py-2 px-4 mt-4 rounded-lg shadow-md hover:bg-purple-600 transition duration-200"
-        >
+         >
             Fetch Heart Rate Data
-        </button>
-*/}
-<Box mt={6}>
-    {['averageDailySteps', 'sleepTracking', 'averageHeartRate'].map((key) => (
-        <div key={key} className="mb-4">
-            <h2 className="text-lg font-bold text-gray-700 capitalize">
+         </button>
+         */}
+              {/* Styling for the other stats */}
+           {['averageDailySteps', 'sleepTracking', 'averageHeartRate'].map((key) => (
+           <div key={key} className="mb-4">
+             <h2 className="text-lg font-bold text-gray-700 capitalize">
                 {key.replace(/([A-Z])/g, ' $1')}
-            </h2>
-            <p className="text-gray-600 bg-gray-100 p-2 rounded-md shadow">
+             </h2>
+             <p className="text-gray-600 bg-gray-100 p-2 rounded-md shadow">
                 {JSON.stringify(profileData[key], null, 2)}
-            </p>
-        </div>
-    ))}
-</Box>
-
-        </div>
-       
-
-    </div>
-)}
-
-    </Box>
-
-    
-)}
-
-
-
-        </Box>
-    );
+             </p>
+            </div>
+         ))}
+          </div>
+    </div>)}
+  </div>)}
+</div>);
 };
-
 export default FitBit;
