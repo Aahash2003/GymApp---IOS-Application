@@ -13,21 +13,13 @@ function AI() {
 
     const formatResponse = (text) => {
         return text
-            // Convert markdown-style numbered headings with bold
             .replace(/\*\*(\d+)\.\*\*\n\n([^\n]+):/g, '<h3 class="text-xl font-bold mt-6 mb-2">$2</h3>')
-            // Handle bold section titles
             .replace(/\*\*([^*]+):\*\*/g, '<h4 class="text-lg font-semibold mt-4 mb-1">$1</h4>')
-            // Convert numbered points with line breaks
             .replace(/(\d+\.)\s+([^\n]+)\n/g, '<div class="mb-4"><strong class="block font-semibold text-gray-800">$1 $2</strong>')
-            // Handle line breaks within descriptions
             .replace(/(\n)(?=[^\d\n])/g, '<br />')
-            // Convert remaining double newlines to paragraph breaks
             .replace(/\n{2,}/g, '</div><div class="mb-4">')
-            // Close any open divs
             .replace(/(<br \/>)*$/, '</div>')
-            // Final cleanup
             .replace(/<div class="mb-4"><\/div>/g, '')
-            // Add consistent spacing after headings
             .replace(/<\/h3>/g, '</h3><div class="mb-4">')
             .replace(/<\/h4>/g, '</h4><div class="mb-3">');
     };
