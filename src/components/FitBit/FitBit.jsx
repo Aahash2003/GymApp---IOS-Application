@@ -1,12 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import {
-
-    Button,
     Alert,
     AlertIcon,
-    Heading,
-    Text,
 } from '@chakra-ui/react';
 
 const baseURL = process.env.NODE_ENV === 'development'
@@ -42,16 +38,13 @@ const FitBit = () => {
     const handleAuthorization = async () => {
         try {
             const verifier = generateCodeVerifier();
-            console.log("verifier: ", verifier);
             const challenge = await generateCodeChallenge(verifier);
-            console.log("challenge: ", challenge);
 
             sessionStorage.setItem('code_verifier', verifier);
 
             const url = `${fitbitAuthUrl}?response_type=code&client_id=${clientId}&redirect_uri=${encodeURIComponent(
                 redirectUri
             )}&scope=profile heartrate&code_challenge=${challenge}&code_challenge_method=S256`;
-
 
             setAuthUrl(url);
             window.location.href = url;
@@ -86,7 +79,7 @@ const FitBit = () => {
                 },
             });
 
-            const averageRestingHeartRate = 73
+            const averageRestingHeartRate = 73;
 
             setProfileData((prevData) => ({
                 ...prevData,
@@ -104,7 +97,7 @@ const FitBit = () => {
 
     const fetchProfileData = async () => {
         if (!accessToken) {
-            setError('Access token is missing.');
+            setError('Access token is missing for prfile.');
             return;
         }
 
@@ -120,91 +113,166 @@ const FitBit = () => {
         fetchHeartRateData();
     };
 
-    useEffect(() => {
-        const urlParams = new URLSearchParams(window.location.search);
-        const code = urlParams.get('code');
-
-        if (code && !accessToken) {
-            handleTokenExchange(code);
+    
+    const handleLogout = async () => {
+        try {
+            if (accessToken) {
+                
+                await axios.post(
+                    'https://api.fitbit.com/oauth2/revoke',
+                    new URLSearchParams({ token: accessToken }).toString(),
+                    {
+                        headers: {
+                            Authorization: `Bearer ${accessToken}`,
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                    }
+                );
+            }
+        } catch (err) {
+            console.error('Error revoking access token:', err.message);
         }
+    
+       
+        setAccessToken('');
+        setProfileData(null);
+        setError(null);
+        localStorage.removeItem('accessToken'); 
+        sessionStorage.removeItem('code_verifier'); 
+    
+        
+        const currentUrl = new URL(window.location.href);
+        currentUrl.searchParams.delete('code'); 
+        currentUrl.searchParams.delete('state');
+        window.history.replaceState({}, document.title, currentUrl.toString());
+    
+        
+        window.location.href = '/FitBit'; 
+    };
+    
+    
+    
 
-
+    useEffect(() => {
+       
+        const storedToken = localStorage.getItem('accessToken');
+        if (storedToken) {
+            setAccessToken(storedToken);
+        } else {
+            
+            const urlParams = new URLSearchParams(window.location.search);
+            const code = urlParams.get('code');
+    
+            if (code) {
+                handleTokenExchange(code);
+            }
+        }
+    }, []);
+    
+    useEffect(() => {
+        if (accessToken) {
+            
+            localStorage.setItem('accessToken', accessToken);
+            fetchProfileData(); 
+        }
     }, [accessToken]);
-
+    
     return (
-        <div >
+        <div className="min-h-screen bg-gray-50 flex flex-col items-center py-8 px-4">
+            
             {error && (
-                <Alert status="error" >
+                <Alert status="error" className="max-w-xl mb-4">
                     <AlertIcon />
                     {error}
                 </Alert>
             )}
-            <div className="flex items-center justify-center">
+    
+            
+            <div className="text-center space-y-4">
+                <h1 className="text-5xl font-extrabold text-gray-800">
+                    <span className="text-red-600">FitBit</span> Dashboard
+                </h1>
+                <p className="text-lg text-gray-600 max-w-md">
+                    View your health data and achievements powered by Fitbit
+                </p>
+            </div>
+    
+          
+            <div className="mt-6">
                 {!accessToken && (
                     <button
                         onClick={handleAuthorization}
-                        className="bg-blue-500  text-white font-medium py-2 px-4 rounded-lg shadow-md hover:bg-blue-600 transition duration-200"
+                        className="bg-red-600 hover:bg-red-700 text-white font-medium py-3 px-6 rounded-full shadow-md transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-red-400"
                     >
                         Connect with Fitbit
                     </button>
                 )}
-
-                {accessToken && !profileData && (
-                    <button
-                        onClick={fetchProfileData}
-                        className="bg-green-500 text-white font-medium py-2 px-4 mt-4 rounded-lg shadow-md hover:bg-green-600 transition duration-200"
-                    >
-                        Fetch Profile Data
-                    </button>
-                )}
-
             </div>
-
-            {profileData && profileData.topBadges && (
-                <div >
-
-                    {profileData && profileData.topBadges && (
-                        <div className="mt-6 p-4 bg-gray-100 rounded-lg shadow-md">
-                            <h2 className="text-xl font-semibold mb-4 text-gray-800">Top Badges</h2>
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                                {profileData.topBadges.map((badge, index) => (
-                                    <div
-                                        key={index}
-                                        className="flex flex-col items-center p-4 bg-white rounded-lg shadow hover:shadow-lg transition-shadow"
-                                    >
-                                        <img
-                                            src={badge.image100px}
-                                            alt={badge.name}
-                                            className="w-20 h-20 mb-4"
-                                        />
-                                        <h3 className="text-lg font-medium text-gray-700 mb-2">
-                                            {badge.name}
-                                        </h3>
-                                        <p className="text-sm text-gray-600 text-center mb-2">
-                                            {badge.description}
-                                        </p>
-                                        <p className="text-xs text-gray-500">
-                                            Earned on: <span className="font-semibold">{badge.dateTime}</span>
-                                        </p>
-                                    </div>
-                                ))}
-
-                                {['averageDailySteps', 'sleepTracking', 'averageHeartRate'].map((key) => (
-                                    <div key={key} className="mb-4">
-                                        <h2 className="text-lg font-bold text-gray-700 capitalize">
-                                            {key.replace(/([A-Z])/g, ' $1')}
-                                        </h2>
-                                        <p className="text-gray-600 bg-gray-100 p-2 rounded-md shadow">
-                                            {JSON.stringify(profileData[key], null, 2)}
-                                        </p>
-                                    </div>
-                                ))}
-                            </div>
+    
+           
+            {profileData && (
+                <div className="w-full max-w-4xl mt-8">
+                   
+                    <div className="p-6 bg-white rounded-xl shadow-lg mb-6">
+                        <h2 className="text-2xl font-semibold text-gray-800 mb-4">Top Badges</h2>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            {profileData.topBadges.map((badge, index) => (
+                                <div
+                                    key={index}
+                                    className="flex flex-col items-center p-4 bg-gray-100 rounded-lg border-2 border-red-500 shadow-md hover:shadow-lg transition-shadow"
+                                >
+                                    <img
+                                        src={badge.image100px}
+                                        alt={badge.name}
+                                        className="w-20 h-20 mb-4 rounded-full border-2 border-red-300"
+                                    />
+                                    <h3 className="text-lg font-medium text-gray-700 mb-2">
+                                        {badge.name}
+                                    </h3>
+                                    <p className="text-sm text-gray-600 text-center mb-2">
+                                        {badge.description}
+                                    </p>
+                                    <p className="text-xs text-gray-500">
+                                        Earned on: <span className="font-semibold">{badge.dateTime}</span>
+                                    </p>
+                                </div>
+                            ))}
                         </div>
-                    )}
+                    </div>
+    
+                    
+                    <div className="p-6 bg-white rounded-xl shadow-lg border-2 border-red-300">
+                        <h2 className="text-2xl font-semibold text-gray-800 mb-4">Activity Data</h2>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            {['averageDailySteps', 'sleepTracking', 'averageHeartRate'].map((key) => (
+                                <div key={key} className="p-4 bg-gray-100 rounded-lg shadow-md">
+                                    <h3 className="text-lg font-bold text-gray-700 capitalize mb-2">
+                                        {key.replace(/([A-Z])/g, ' $1')}
+                                    </h3>
+                                    <p className="text-gray-600 bg-white p-3 rounded-md shadow-sm">
+                                        {JSON.stringify(profileData[key], null, 2)}
+                                    </p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            )}
+    
+           
+            {accessToken && (
+                <div className="mt-8">
+                    <button
+                        onClick={handleLogout}
+                        className="bg-red-500 text-white font-medium py-3 px-6 rounded-full shadow-md hover:bg-red-600 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-red-400"
+                    >
+                        Log Out
+                    </button>
                 </div>
             )}
         </div>
     );
+
 };
+
 export default FitBit;
