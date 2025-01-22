@@ -15,7 +15,7 @@ function AI() {
         return text
             .replace(/\*\*(\d+)\.\*\*\n\n([^\n]+):/g, '<h3 class="text-xl font-bold mt-6 mb-2">$2</h3>')
             .replace(/\*\*([^*]+):\*\*/g, '<h4 class="text-lg font-semibold mt-4 mb-1">$1</h4>')
-            .replace(/(\d+\.)\s+([^\n]+)\n/g, '<div class="mb-4"><strong class="block font-semibold text-gray-800">$1 $2</strong>')
+            .replace(/(\d+\.)\s+([^:\n]+):([^\n]*)/g, '<div class="mb-4"><strong class="block font-semibold text-gray-800">$1 $2:</strong>$3</div>')
             .replace(/(\n)(?=[^\d\n])/g, '<br />')
             .replace(/\n{2,}/g, '</div><div class="mb-4">')
             .replace(/(<br \/>)*$/, '</div>')
@@ -52,7 +52,7 @@ function AI() {
             <div className="flex flex-col items-center space-y-6 mx-auto px-4 max-w-4xl">
                 <div className="text-center space-y-2">
                     <h1 className="text-4xl font-bold text-gray-800">
-                        <span className="text-blue-600">AI</span> Workout Assistant
+                        <span className="text-red-600">AI</span> Workout Assistant
                     </h1>
                     <p className="text-lg text-gray-600">Get personalized exercise recommendations powered by AI</p>
                 </div>
@@ -66,7 +66,7 @@ function AI() {
                             setInput(e.target.value);
                             setError('');
                         }}
-                        className="w-full px-6 py-4 border-2 border-blue-100 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 text-lg placeholder-gray-400 transition-all"
+                        className="w-full px-6 py-4 border-2 border-red-100 rounded-lg focus:outline-none focus:border-red-500 focus:ring-2 focus:ring-red-200 text-lg placeholder-gray-400 transition-all"
                         maxLength={100}
                     />
 
@@ -77,9 +77,9 @@ function AI() {
                         <button
                             onClick={handleSubmit}
                             disabled={loading}
-                            className="w-full sm:w-auto px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold
+                            className="w-full sm:w-auto px-8 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg font-semibold
                       disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center
-                      shadow-lg hover:shadow-blue-200 order-1 sm:order-2"
+                      shadow-lg hover:shadow-red-200 order-1 sm:order-2"
                         >
                             {loading ? (
                                 <>
@@ -102,11 +102,11 @@ function AI() {
                 </div>
 
                 {response && !loading && (
-                    <div className="w-full p-6 bg-white border-2 border-blue-50 rounded-xl shadow-lg">
+                    <div className="w-full p-6 bg-white border-2 border-red-50 rounded-xl shadow-lg">
                         <div className="prose-lg max-w-none">
                             <div className="flex items-center mb-6">
-                                <div className="p-2 bg-blue-100 rounded-lg mr-3">
-                                    <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <div className="p-2 bg-red-100 rounded-lg mr-3">
+                                    <svg className="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
                                     </svg>
                                 </div>
@@ -119,7 +119,7 @@ function AI() {
 
                 {loading && (
                     <div className="py-8 flex flex-col items-center space-y-3 w-full text-center">
-                        <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+                        <div className="w-12 h-12 border-4 border-red-500 border-t-transparent rounded-full animate-spin"></div>
                         <p className="text-gray-600 font-medium">Analyzing your request...</p>
                     </div>
                 )}
@@ -134,8 +134,8 @@ function AI() {
                 )}
 
                 {!response && !loading && (
-                    <div className="w-full p-6 bg-white border-2 border-blue-200 rounded-xl shadow-lg">
-                        <h3 className="text-lg font-semibold text-blue-800 mb-3 flex items-center">
+                    <div className="w-full p-6 bg-white border-2 border-red-200 rounded-xl shadow-lg">
+                        <h3 className="text-lg font-semibold text-red-800 mb-3 flex items-center">
                             <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
                                 <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
                             </svg>
