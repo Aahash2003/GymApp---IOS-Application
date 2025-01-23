@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { Box } from '@mui/material'
 import { exerciseOptions, fetchData, youtubeOptions } from '../utils/fetchData';
 import Detail from '../components/Detail';
 import ExerciseVideos from '../components/ExerciseVideos';
@@ -40,14 +39,14 @@ const ExerciseDetail = () => {
     fetchExercisesData();
   }, [id]);
   return (
-    <Box>
+    <div>
       <Detail exerciseDetail= {exerciseDetail}/>
 
       <ExerciseVideos exerciseVideos= {exerciseVideos} name = {exerciseDetail.name}/>
 
       <SimilarExercises targetMuscleExercises = {targetMuscleExercises} equipmentExercises = {equipmentExercises}/>
 
-    </Box>
+    </div>
   )
 }
 

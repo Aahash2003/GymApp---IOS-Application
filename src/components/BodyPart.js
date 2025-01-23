@@ -1,22 +1,20 @@
 import React from 'react';
-import { Stack, Typography } from '@mui/material';
 import Icon from '../Assets/Icon/Equipment Sign.png';
 
 const BodyPart = ({ item, setBodyPart, bodyPart }) => (
-  <Stack
-    type="button"
-    alignItems="center"
-    justifyContent="center"
-    className="bodyPart-card"
-    sx={bodyPart === item ? { borderTop: '4px solid #FF2625', background: '#fff', borderBottomLeftRadius: '20px', width: '270px', height: '282px', cursor: 'pointer', gap: '47px' } : { background: '#fff', borderBottomLeftRadius: '20px', width: '270px', height: '282px', cursor: 'pointer', gap: '47px' }}
-    onClick={() => {
-      setBodyPart(item);
-      window.scrollTo({ top: 1800, left: 100, behavior: 'smooth' });
-    }}
-  >
-    <img src={Icon} alt="dumbbell" style={{ width: '40px', height: '40px' }} />
-    <Typography fontSize="24px" fontWeight="bold" fontFamily="Alegreya" color="#3A1212" textTransform="capitalize"> {item}</Typography>
-  </Stack>
+    <button
+        className={`flex flex-col items-center justify-center rounded-bl-lg cursor-pointer gap-6 
+      ${bodyPart === item ? 'border-t-4 border-red-500' : ''} 
+      bg-white 
+      w-48 h-56 sm:w-64 sm:h-72`}
+        onClick={() => {
+            setBodyPart(item);
+            window.scrollTo({ top: 1800, left: 100, behavior: 'smooth' });
+        }}
+    >
+        <img src={Icon} alt="dumbbell" className="w-8 h-8 sm:w-10 sm:h-10" />
+        <p className="text-lg font-bold font-serif text-gray-800 capitalize sm:text-lg">{item}</p>
+    </button>
 );
 
 export default BodyPart;

@@ -6,7 +6,6 @@
     "@chakra-ui/react": "^2.8.2",
     "@emotion/react": "^11.13.0",
     "@emotion/styled": "^11.13.0",
-    "@mui/material": "^5.12.3",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -38,6 +37,7 @@
     "react-calendar": "^5.0.0",
     "react-dom": "^18.2.0",
     "react-horizontal-scrolling-menu": "^2.8.2",
+    "react-icons": "^5.4.0",
     "react-loader-spinner": "^5.3.4",
     "react-router-dom": "^6.11.1",
     "react-scripts": "5.0.1",
@@ -81,6 +81,7 @@
     "concurrently": "^8.2.2",
     "cross-env": "^7.0.3",
     "nodemon": "^3.1.4",
+    "tailwindcss": "^3.4.17",
     "webpack-cli": "^5.1.4"
   }
 }
