@@ -10,7 +10,10 @@ const baseURL = process.env.NODE_ENV === 'development'
     : 'https://mustang-central-eb5dd97b4796.herokuapp.com/';
 
 const clientId = '23PZHY';
-const redirectUri = 'http://localhost:3000/FitBit';
+const redirectUri =
+    process.env.NODE_ENV === 'development'
+        ? 'http://localhost:3000/FitBit'
+        : 'https://habits-development.netlify.app/FitBit';
 const fitbitAuthUrl = 'https://www.fitbit.com/oauth2/authorize';
 
 const generateCodeVerifier = () => {
@@ -79,7 +82,7 @@ const FitBit = () => {
                 },
             });
 
-            const averageRestingHeartRate = 73;
+            const averageRestingHeartRate = 0;
 
             setProfileData((prevData) => ({
                 ...prevData,
